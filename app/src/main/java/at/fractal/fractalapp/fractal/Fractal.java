@@ -164,7 +164,12 @@ public class Fractal extends GameObject
     {
         String number = "";
         String part = commands.substring(offset);
-        while(part.matches("[0-9].*")|| part.matches("\\..*") || part.matches("-.*") || part.matches("\\+.*"))
+        if (part.matches("[0-9].*")|| part.matches("\\..*") || part.matches("-.*") || part.matches("\\+.*"))
+        {
+            number += part.charAt(0);
+            part = part.substring(1);
+        }
+        while(part.matches("[0-9].*")|| part.matches("\\..*"))
         {
             number += part.charAt(0);
             part = part.substring(1);
@@ -243,7 +248,7 @@ public class Fractal extends GameObject
                 destination.add(new ChangeColorShifted(Integer.parseInt(number)));
                 i += number.length() - 1;
             }
-            else if (command.matches("[F-K]"))
+            else if (command.matches("[F-Z]"))
             {
                 boolean commandExists = false;
                 for (ForwardDraw drawCommand : drawCommands)

@@ -17,6 +17,7 @@ import java.util.Timer;
 
 import at.fractal.fractalapp.data.Vector2D;
 import at.fractal.fractalapp.fractal.Fractal;
+import at.fractal.fractalapp.fractal.PathFractal;
 import at.fractal.fractalapp.fractal.Snowflake;
 import at.fractal.fractalapp.fractal.Squares;
 import at.fractal.fractalapp.fractal.Triangle;
@@ -130,14 +131,19 @@ public class FractalView extends SurfaceView implements Runnable {
         //fractals.add(test);
 
 
+
+
         Fractal triangle = new Triangle(this, spawnPosition);
         fractals.add(triangle);
 
-        Fractal squares = new Squares(this,spawnPosition);
-        fractals.add(squares);
-
-        Fractal snowflake = new Watch(this, spawnPosition);
+        Fractal snowflake = new Snowflake(this, spawnPosition);
         fractals.add(snowflake);
+
+        spawnPosition = new Vector2D(0,0);
+
+        Fractal pathFractal = new PathFractal(this, spawnPosition);
+        fractals.add(pathFractal);
+
         fractalsToDraw.add(fractals.get(0));
 
 

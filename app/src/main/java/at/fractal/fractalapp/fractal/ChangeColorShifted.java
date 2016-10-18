@@ -37,7 +37,9 @@ public class ChangeColorShifted extends Command
         {
             index = index + Turtle.COLORS.size() - 1;
         }
-        return new TurtleInformation(turtleInformation.getTransform(), index);
+        Command.newTurtleInformation.setColorNumber(index);
+        return Command.newTurtleInformation;
+        //return new TurtleInformation(turtleInformation.getTransform(), index);
     }
 
     @Override

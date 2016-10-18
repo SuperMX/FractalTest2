@@ -41,6 +41,17 @@ public class TurtleInformation
 
     // endregion
 
+    // region setters
+    public void setTransform(Transform2D transform)
+    {
+        this.transform = transform;
+    }
+
+    public void setColorNumber (int colorNumber)
+    {
+        this.colorNumber = colorNumber;
+    }
+
     // region public methods
 
     @Override

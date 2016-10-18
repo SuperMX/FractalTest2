@@ -44,7 +44,11 @@ public class JumpCommand extends Command
     public TurtleInformation execute(Canvas c, TurtleInformation turtleInfo)
     {
         Vector2D newPosition = Vector2D.add(turtleInfo.getTransform().getPosition(), delta.getTransform().getPosition());
-        return new TurtleInformation(new Transform2D(newPosition, delta.getTransform().getRotation()), delta.getColorNumber());
+        Command.newTurtleInformation.getTransform().setPosition(newPosition);
+        Command.newTurtleInformation.getTransform().setRotation(delta.getTransform().getRotation());
+        Command.newTurtleInformation.setColorNumber(delta.getColorNumber());
+        return Command.newTurtleInformation;
+        //return new TurtleInformation(new Transform2D(newPosition, delta.getTransform().getRotation()), delta.getColorNumber());
     }
 
     @Override

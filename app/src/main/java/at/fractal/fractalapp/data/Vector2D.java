@@ -17,6 +17,8 @@ public class Vector2D
     public static final Vector2D LEFT = new Vector2D(0,-1);
     public static final Vector2D RIGHT = new Vector2D(0,1);
 
+    private static Vector2D polarToCartesianVector = new Vector2D(0,0);
+
     // endregion
 
     // region constructors
@@ -86,6 +88,16 @@ public class Vector2D
         y *= scalar;
     }
 
+    /**
+     * adds a vector to this vector
+     * @param v the vector to be added
+     */
+    public void add(Vector2D v)
+    {
+        x += v.x;
+        y += v.y;
+    }
+
     // endregion
 
     // region public static methods
@@ -148,7 +160,9 @@ public class Vector2D
      */
     public static Vector2D polarToCartesian(double magnitude, double angle)
     {
-        return new Vector2D(magnitude * Math.cos(angle), -magnitude * Math.sin(angle));
+        polarToCartesianVector.x = magnitude * Math.cos(angle);
+        polarToCartesianVector.y = -magnitude * Math.sin(angle);
+        return polarToCartesianVector;
     }
 
     @Override

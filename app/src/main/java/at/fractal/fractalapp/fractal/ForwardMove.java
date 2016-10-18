@@ -48,9 +48,10 @@ public class ForwardMove extends Command
 
     public TurtleInformation execute(Canvas c, TurtleInformation turtleInfo)
     {
-        Vector2D delta = Vector2D.polarToCartesian(length, turtleInfo.getTransform().getRotation());
-        Vector2D newPos = Vector2D.add(turtleInfo.getTransform().getPosition(), delta);
-        return new TurtleInformation(new Transform2D(newPos, turtleInfo.getTransform().getRotation()),turtleInfo.getColorNumber());
+        Transform2D transform = turtleInfo.getTransform();
+        Vector2D delta = Vector2D.polarToCartesian(length, transform.getRotation());
+        Command.newTurtleInformation.getTransform().getPosition().add(delta);
+        return Command.newTurtleInformation;
     }
 
     @Override

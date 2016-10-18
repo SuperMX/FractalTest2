@@ -26,7 +26,7 @@ public class Turtle
     private Fractal fractal;
     private FractalView fractalView;
     private TurtleInformation currentTurtleInfo;
-    public static ArrayList<Color> COLORS = new ArrayList<>();
+    public static ArrayList<Integer> COLORS = new ArrayList<>();
 
     // endregion
 
@@ -38,40 +38,52 @@ public class Turtle
     // The very first color (at index 0) is white.
     static
     {
-        /*COLORS.add(Color.WHITE);
+        COLORS.add(Color.WHITE);
         int steps = 8;
         int stepSize = 256 / steps;
+        int fullRed = 0x00FF0000;
+        int fullGreen = 0x0000FF00;
+        int fullBlue = 0x000000FF;
+        int fullAlpha = 0xFF000000;
+        int color = 0;
+
         for (int i = 0; i <= steps; i++)
         {
             int value = Math.min(255,i * stepSize);
-            COLORS.add(new Color(255,value,0));
+            color = fullAlpha + fullRed + (value << 8) + 0;
+            COLORS.add(color);
         }
         for (int i = 1; i <= steps; i++)
         {
             int value = Math.max(0,255 - i * stepSize);
-            COLORS.add(new Color(value,255,0));
+            color = fullAlpha + (value << 16) + fullGreen + 0;
+            COLORS.add(color);
         }
         for (int i = 0; i <= steps; i++)
         {
             int value = Math.min(255,i * stepSize);
-            COLORS.add(new Color(0,255,value));
+            color = fullAlpha + 0 + fullGreen + value;
+            COLORS.add(color);
         }
         for (int i = 1; i <= steps; i++)
         {
             int value = Math.max(0, 255 - i * stepSize);
-            COLORS.add(new Color(0,value,255));
+            color = fullAlpha + 0 + (value << 8) + fullBlue;
+            COLORS.add(color);
         }
         for (int i = 0; i <= steps; i++)
         {
             int value = Math.min(255,i * stepSize);
-            COLORS.add(new Color(value,0,255));
+            color = fullAlpha + (value << 16)  + 0 + fullBlue;
+            COLORS.add(color);
         }
         for (int i = 1; i < steps; i++)
         {
             int value = Math.max(0,255 - i * stepSize);
-            COLORS.add(new Color(255,0,value));
+            color = fullAlpha + 255 + 0 + value;
+            COLORS.add(color);
         }
-        System.out.println("done");*/
+        //System.out.println("done");
     }
 
     /**
@@ -79,7 +91,7 @@ public class Turtle
      * @param startPosition The position relative to the middle of the fractal where the turtle starts drawing.
      *                      The turtle always starts with its face up. (in device coordinates)
      * @param lSystem the lSystem which commands the turtle follows
-     * @param fractalPanel the panel on which the fractal is drawn
+     * @param fractalView the panel on which the fractal is drawn
      */
     public Turtle(Fractal fractal, Vector2D startPosition, LSystem lSystem, FractalView fractalView)
     {
@@ -126,7 +138,7 @@ public class Turtle
 
     /**
      * draws the fractal to the screen and cuts off all parts of the fractal which are outside of the screen to avoid memory and rendering overload.
-     * @param p the graphics object used to draw on the panel
+     * @param c the canvas object used to draw on the panel
      * @return true if the fractal got lost and is not visible anywhere on the screen anymore, false otherwise.
      */
     public boolean drawAndCutOff(Canvas c)
@@ -134,7 +146,11 @@ public class Turtle
         //fractal.updatePosition();
         currentTurtleInfo = startTurtleInfo.clone();
         Vector2D pos = Vector2D.add(currentTurtleInfo.getTransform().getPosition(), fractal.getPosition());
-        currentTurtleInfo = new TurtleInformation(new Transform2D(pos, currentTurtleInfo.getTransform().getRotation()), currentTurtleInfo.getColorNumber());
+        currentTurtleInfo.getTransform().setPosition(pos);
+
+        Command setStartTurtleInformation = new SetStartTurtleInformation();
+        setStartTurtleInformation.execute(c, currentTurtleInfo);
+
         List<Command> commands = lSystem.getCurrent();
         List<Command> newCommand = new LinkedList<>();
         TurtleInformation newTurtleInfo;
@@ -176,7 +192,7 @@ public class Turtle
                     }
                 }
             }
-            currentTurtleInfo = newTurtleInfo;
+            currentTurtleInfo = newTurtleInfo.clone();
             if (!cutOffStartSet)
             {
                 newCommand.add(command);

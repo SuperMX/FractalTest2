@@ -32,8 +32,9 @@ public class TurnLeft extends Command
 
     public TurtleInformation execute(Canvas c, TurtleInformation turtleInfo)
     {
-        double newAngle = (turtleInfo.getTransform().getRotation() + angle) % (2 * Math.PI);
-        return new TurtleInformation(new Transform2D(turtleInfo.getTransform().getPosition(), newAngle),turtleInfo.getColorNumber());
+        Command.newTurtleInformation.getTransform().addRotation(angle);
+        return Command.newTurtleInformation;
+        //return new TurtleInformation(new Transform2D(turtleInfo.getTransform().getPosition(), newAngle),turtleInfo.getColorNumber());
     }
 
     @Override

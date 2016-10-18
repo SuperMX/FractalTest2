@@ -5,7 +5,6 @@ import android.graphics.Paint;
 
 import at.fractal.fractalapp.data.Transform2D;
 import at.fractal.fractalapp.data.Vector2D;
-import at.fractal.fractalapp.gui.DrawUtils;
 import at.fractal.fractalapp.gui.FractalView;
 
 /**
@@ -89,13 +88,12 @@ public class ForwardDraw extends Command
 
     public TurtleInformation execute(Canvas c, TurtleInformation turtleInfo)
     {
-        Vector2D delta = Vector2D.polarToCartesian(length, turtleInfo.getTransform().getRotation());
-        Vector2D newPos = Vector2D.add(turtleInfo.getTransform().getPosition(), delta);
-        //p.setColor(Color.WHITE);
-        //g.setColor(Turtle.COLORS.get(turtleInfo.getColorNumber()));
-
-        drawLine(c, turtleInfo.getTransform().getPosition(), newPos, fractalView.getWidth(), fractalView.getHeight());
-        return new TurtleInformation(new Transform2D(newPos, turtleInfo.getTransform().getRotation()),turtleInfo.getColorNumber());
+        Transform2D transform = turtleInfo.getTransform();
+        Vector2D delta = Vector2D.polarToCartesian(length, transform.getRotation());
+        Command.newTurtleInformation.getTransform().getPosition().add(delta);
+        FractalView.PAINT.setColor(Turtle.COLORS.get(turtleInfo.getColorNumber()));
+        drawLine(c, transform.getPosition(), Command.newTurtleInformation.getTransform().getPosition(), fractalView.getWidth(), fractalView.getHeight());
+        return Command.newTurtleInformation;
     }
 
     @Override
@@ -141,7 +139,7 @@ public class ForwardDraw extends Command
      * Inspired by the design of OpenGL, device coordinates are in the range of [-1,1] for the smaller
      * value of width and height. the interval of the other (bigger) dimension is proportionally larger than the smaller one.
      * This method converts those device coordinates to pixel coordinates and actually draws a line from the start to the end position.
-     * @param g the graphics object used to drawAndCutOff to the screen.
+     * @param c the canvas object used to drawAndCutOff to the screen.
      * @param startPosition the start position for the line in device coordinates.
      * @param endPosition the end position for the line in device coordinates.
      * @param width the total width of the panel the fractal is drawn to.
@@ -155,8 +153,7 @@ public class ForwardDraw extends Command
 
         int x2 = (int) Math.round((endPosition.getX() * screenSize / 2) + width / 2);
         int y2 = (int) Math.round((endPosition.getY() * screenSize / 2) + height / 2);
-        c.drawLine(x1, y1, x2, y2, DrawUtils.paint /* For Porting Test Purposes */);
-        //g.drawLine(x1, y1, x2, y2);
+        c.drawLine(x1, y1, x2, y2, FractalView.PAINT /* For Porting Test Purposes */);
     }
 
     // endregion

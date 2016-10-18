@@ -2,11 +2,16 @@ package at.fractal.fractalapp.fractal;
 
 import android.graphics.Canvas;
 
+import at.fractal.fractalapp.data.Transform2D;
+import at.fractal.fractalapp.data.Vector2D;
+
 /**
  * This is the base class for all other commands which can be executed by the turtle.
  */
 public abstract class Command
 {
+
+    protected static TurtleInformation newTurtleInformation = new TurtleInformation(new Transform2D(new Vector2D(0,0),0),0);
 
     // region public methods
 
@@ -14,14 +19,14 @@ public abstract class Command
      * adapt the parameters of the command to compensate for the zoom into the fractal
      * @param zoomFactor scales the size of the fractal by the specified value (>1!)
      */
-    public void zoom(double zoomFactor){};
+    public void zoom(double zoomFactor){}
 
     /**
      * this method is only used by the ForwardDraw and ForwardMove classes.
      * it determines how many ForwardDraw/ForwardMove commands in the next generation are needed to replace one
      * ForwardDraw/ForwardMove command in the current generation.
      */
-    public void shrink(){};
+    public void shrink(){}
 
     /**
      * this method is only used by the ForwardDraw and ForwardMove classes to determine when
@@ -40,7 +45,7 @@ public abstract class Command
     /**
      * this method executes this command and returns the new turtleInformation data of the turtle
      * after executing the command.
-     * @param g a graphics object used by the ForwardDraw class to drawAndCutOff lines to the screen.
+     * @param c a canvas object used by the ForwardDraw class to drawAndCutOff lines to the screen.
      * @param turtleInfo describes the current state of the turtle before executing this command.
      * @return the state of the turtle after executing this command.
      */

@@ -37,6 +37,23 @@ public class Transform2D
 
     // endregion
 
+    // region setters
+
+    public void setPosition(Vector2D position)
+    {
+        this.position = position;
+    }
+
+    public void setRotation(double rotation)
+    {
+        this.rotation = rotation;
+    }
+
+    public void addRotation(double angle)
+    {
+        rotation = (rotation + angle) % (2 * Math.PI);
+    }
+
     // region public methods
 
     @Override

@@ -12,6 +12,6 @@ public class Triangle extends Fractal
 
     public Triangle(FractalView fractalPanel, Vector2D spawnPosition)
     {
-        super(fractalPanel,rules,"C40F-G-G",new Vector2D(-0.5,0.7),spawnPosition,1.4,120,2,0.2);
+        super(fractalPanel,rules,"C40F-G-G",new Vector2D(-0.5,0.7),spawnPosition,1.4,120,2,0.1);
     }
 }

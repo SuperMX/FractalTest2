@@ -25,11 +25,11 @@ public class ChangeColorDirectly extends Command
 
     // region public methods
 
-    public TurtleInformation execute(Canvas c, TurtleInformation turtleInformation)
+    @Override
+    public TurtleInformation executeSpecific(Canvas c, TurtleInformation turtleInfo)
     {
-        Command.newTurtleInformation.setColorNumber(colorNumber);
-        return Command.newTurtleInformation;
-        //return new TurtleInformation(turtleInformation.getTransform(), colorNumber);
+        turtleInfo.setColorNumber(colorNumber);
+        return turtleInfo;
     }
 
     @Override

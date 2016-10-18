@@ -18,6 +18,7 @@ public class Vector2D
     public static final Vector2D RIGHT = new Vector2D(0,1);
 
     private static Vector2D polarToCartesianVector = new Vector2D(0,0);
+    private static Vector2D copyVector = new Vector2D(0,0);
 
     // endregion
 
@@ -169,6 +170,13 @@ public class Vector2D
     public Vector2D clone()
     {
         return new Vector2D(this.x,this.y);
+    }
+
+    public Vector2D copy()
+    {
+        copyVector.x = this.x;
+        copyVector.y = this.y;
+        return copyVector;
     }
 
 

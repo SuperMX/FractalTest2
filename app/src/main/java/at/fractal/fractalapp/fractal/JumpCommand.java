@@ -2,7 +2,6 @@ package at.fractal.fractalapp.fractal;
 
 import android.graphics.Canvas;
 
-import at.fractal.fractalapp.data.Transform2D;
 import at.fractal.fractalapp.data.Vector2D;
 
 /**
@@ -41,14 +40,14 @@ public class JumpCommand extends Command
         delta.getTransform().getPosition().scale(zoomFactor);
     }
 
-    public TurtleInformation execute(Canvas c, TurtleInformation turtleInfo)
+    @Override
+    public TurtleInformation executeSpecific(Canvas c, TurtleInformation turtleInfo)
     {
         Vector2D newPosition = Vector2D.add(turtleInfo.getTransform().getPosition(), delta.getTransform().getPosition());
-        Command.newTurtleInformation.getTransform().setPosition(newPosition);
-        Command.newTurtleInformation.getTransform().setRotation(delta.getTransform().getRotation());
-        Command.newTurtleInformation.setColorNumber(delta.getColorNumber());
-        return Command.newTurtleInformation;
-        //return new TurtleInformation(new Transform2D(newPosition, delta.getTransform().getRotation()), delta.getColorNumber());
+        turtleInfo.getTransform().setPosition(newPosition);
+        turtleInfo.getTransform().setRotation(delta.getTransform().getRotation());
+        turtleInfo.setColorNumber(delta.getColorNumber());
+        return turtleInfo;
     }
 
     @Override

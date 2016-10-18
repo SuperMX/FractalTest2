@@ -70,7 +70,7 @@ public class Fractal extends GameObject
      * @param fractalView the panel which this fractal is drawn on.
      * @param rulesString define the replacement rules of the used grammar.
      * @param axiomString defines the start axiom of the grammar
-     * @param startPosition where the turtle begins to drawAndCutOff relative to the middle of the fractal in device coordinates
+     * @param startPosition where the turtle begins to cutOff relative to the middle of the fractal in device coordinates
      * @param spawnPosition where the turtle spawns on the screen in device coordinates
      * @param startLength the distance the turtle moves in a ForwardMove or ForwardDraw command in the grammar's axiom.
      * @param angle the angle the turtle turns when executing a TurnLeft or TurnRight command. (in degrees)

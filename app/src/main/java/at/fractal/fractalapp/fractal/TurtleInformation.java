@@ -4,7 +4,7 @@ package at.fractal.fractalapp.fractal;
 import at.fractal.fractalapp.data.Transform2D;
 
 /**
- * This class stores all data which describes the current state of the turtle used to drawAndCutOff a fractal.
+ * This class stores all data which describes the current state of the turtle used to cutOff a fractal.
  */
 public class TurtleInformation
 {

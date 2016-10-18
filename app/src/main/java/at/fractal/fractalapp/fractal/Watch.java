@@ -16,7 +16,7 @@ public class Watch extends Fractal
 
     public Watch(FractalView fractalPanel, Vector2D spawnPosition)
     {
-        super(fractalPanel,rules,"C30F",new Vector2D(0,0.5),spawnPosition,1,60,3,0.08);
+        super(fractalPanel,rules,"C30F",new Vector2D(0,0.5),spawnPosition,1,60,3,0.1);
     }
 
 }

@@ -11,7 +11,9 @@ import at.fractal.fractalapp.data.Vector2D;
 public abstract class Command
 {
 
-    protected static TurtleInformation newTurtleInformation = new TurtleInformation(new Transform2D(new Vector2D(0,0),0),0);
+    private static boolean turtleInfoBuffer0Active = true;
+    private static TurtleInformation turtleInfoBuffer0 = new TurtleInformation(new Transform2D(new Vector2D(0,0),0),0);
+    private static TurtleInformation turtleInfoBuffer1 = new TurtleInformation(new Transform2D(new Vector2D(0,0),0),0);
 
     // region public methods
 
@@ -42,14 +44,32 @@ public abstract class Command
      */
     public boolean isNextGenerationNeeded() { return false; }
 
+    public TurtleInformation execute(Canvas c)
+    {
+        turtleInfoBuffer0 = executeSpecific(c, turtleInfoBuffer0);
+        return turtleInfoBuffer0;
+    }
+
+    public TurtleInformation finish(Canvas c)
+    {
+        turtleInfoBuffer1 = executeSpecific(c, turtleInfoBuffer1);
+        return turtleInfoBuffer1;
+    }
+
+    public static void initializeTurtleInfoBuffers(TurtleInformation turtleInfo)
+    {
+        turtleInfoBuffer0 = turtleInfo.clone();
+        turtleInfoBuffer1 = turtleInfo.clone();
+    }
+
     /**
      * this method executes this command and returns the new turtleInformation data of the turtle
      * after executing the command.
-     * @param c a canvas object used by the ForwardDraw class to drawAndCutOff lines to the screen.
+     * @param c a canvas object used by the ForwardDraw class to draw lines to the screen.
      * @param turtleInfo describes the current state of the turtle before executing this command.
      * @return the state of the turtle after executing this command.
      */
-    public abstract TurtleInformation execute(Canvas c, TurtleInformation turtleInfo);
+    public abstract TurtleInformation executeSpecific(Canvas c, TurtleInformation turtleInfo);
 
     // endregion
 

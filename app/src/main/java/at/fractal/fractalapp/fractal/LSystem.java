@@ -15,6 +15,7 @@ public class LSystem
 
     private List<Rule> rules;
     private List<Command> current;
+    private Turtle turtle;
 
     // endregion
 
@@ -42,12 +43,21 @@ public class LSystem
 
     // endregion
 
+    // region setters
+
+    public void setTurtle(Turtle turtle)
+    {
+        this.turtle = turtle;
+    }
+
+    // endregion
+
     // region public methods
 
     /**
      * adapt the parameters of the commands to compensate for the zoom into the fractal
      */
-    public void zoom(double zoomFactor)
+    public boolean zoom(double zoomFactor)
     {
         boolean nextGenerationCreated = false;
         for (Rule rule : rules)
@@ -57,7 +67,6 @@ public class LSystem
             if (!nextGenerationCreated && command.isNextGenerationNeeded())
             {
                 nextGenerationCreated = true;
-                nextGeneration();
             }
         }
         // the offsets in distance of all jump commands also need to be scaled proportionally
@@ -69,6 +78,12 @@ public class LSystem
                 jumpCommand.zoom(zoomFactor);
             }
         }
+        if (nextGenerationCreated)
+        {
+            current = turtle.cutOff(null);
+            nextGeneration();
+        }
+        return nextGenerationCreated;
     }
 
     /**

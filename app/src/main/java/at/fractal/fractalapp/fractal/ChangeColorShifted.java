@@ -25,9 +25,10 @@ public class ChangeColorShifted extends Command
 
     // region public methods
 
-    public TurtleInformation execute(Canvas c, TurtleInformation turtleInformation)
+    @Override
+    public TurtleInformation executeSpecific(Canvas c, TurtleInformation turtleInfo)
     {
-        int index = turtleInformation.getColorNumber();
+        int index = turtleInfo.getColorNumber();
         index += steps;
         if (index >= Turtle.COLORS.size())
         {
@@ -37,9 +38,8 @@ public class ChangeColorShifted extends Command
         {
             index = index + Turtle.COLORS.size() - 1;
         }
-        Command.newTurtleInformation.setColorNumber(index);
-        return Command.newTurtleInformation;
-        //return new TurtleInformation(turtleInformation.getTransform(), index);
+        turtleInfo.setColorNumber(index);
+        return turtleInfo;
     }
 
     @Override

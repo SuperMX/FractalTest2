@@ -18,6 +18,6 @@ public class Islands extends Fractal
 
     public Islands(FractalView fractalPanel, Vector2D spawnPosition)
     {
-        super(fractalPanel,rules,"C20F-F-F-F",new Vector2D(-0.5,0.5),spawnPosition,1,90,6,0.015);
+        super(fractalPanel,rules,"C20F-F-F-F",new Vector2D(-0.5,0.5),spawnPosition,1,90,6,0.1);
     }
 }

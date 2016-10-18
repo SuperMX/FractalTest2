@@ -15,6 +15,6 @@ public class PathFractal extends Fractal
     // left snail: "G=L0,1,+0.02,0FF+Z+F+M+f+fG", "M=0.5-N+N+Z+F++fF", "M=0.5-O+O+Z+F++fF", "N=0.2F-F+N+F+Z++f", "N=0.8F-F+O+O+F++f", "O=0.2-F+O+F+Z++fF", "O=0.8-N+N+F+F++fF
     public PathFractal(FractalView fractalView, Vector2D spawnPosition)
     {
-        super(fractalView,rules,"C30G",new Vector2D(0,0.5),spawnPosition,1,90,2,0.030);
+        super(fractalView,rules,"C30G",new Vector2D(0,0.5),spawnPosition,1,90,2,0.05);
     }
 }

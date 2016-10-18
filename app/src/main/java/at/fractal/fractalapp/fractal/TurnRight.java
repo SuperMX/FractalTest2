@@ -2,8 +2,6 @@ package at.fractal.fractalapp.fractal;
 
 import android.graphics.Canvas;
 
-import at.fractal.fractalapp.data.Transform2D;
-
 /**
  * This command turns the turtle to the left.
  */
@@ -30,11 +28,11 @@ public class TurnRight extends Command
 
     // region public methods
 
-    public TurtleInformation execute(Canvas c, TurtleInformation turtleInfo)
+    @Override
+    public TurtleInformation executeSpecific(Canvas c, TurtleInformation turtleInfo)
     {
-        Command.newTurtleInformation.getTransform().addRotation(-angle);
-        return Command.newTurtleInformation;
-        //return new TurtleInformation(new Transform2D(turtleInfo.getTransform().getPosition(), newAngle),turtleInfo.getColorNumber());
+        turtleInfo.getTransform().addRotation(-angle);
+        return turtleInfo;
     }
 
     @Override

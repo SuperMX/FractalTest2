@@ -14,6 +14,6 @@ public class Carpet extends Fractal
 
     public Carpet(FractalView fractalPanel, Vector2D spawnPosition)
     {
-        super(fractalPanel,rules,"C30F",new Vector2D(0,0.5),spawnPosition,1,90,3,0.025);
+        super(fractalPanel,rules,"C30F",new Vector2D(0,0.5),spawnPosition,1,90,3,0.1);
     }
 }

@@ -46,12 +46,12 @@ public class ForwardMove extends Command
         length *= zoomFactor;
     }
 
-    public TurtleInformation execute(Canvas c, TurtleInformation turtleInfo)
+    @Override
+    public TurtleInformation executeSpecific(Canvas c, TurtleInformation turtleInfo)
     {
-        Transform2D transform = turtleInfo.getTransform();
-        Vector2D delta = Vector2D.polarToCartesian(length, transform.getRotation());
-        Command.newTurtleInformation.getTransform().getPosition().add(delta);
-        return Command.newTurtleInformation;
+        Vector2D delta = Vector2D.polarToCartesian(length, turtleInfo.getTransform().getRotation());
+        turtleInfo.getTransform().getPosition().add(delta);
+        return turtleInfo;
     }
 
     @Override

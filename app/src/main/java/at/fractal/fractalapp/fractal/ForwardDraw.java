@@ -25,6 +25,11 @@ public class ForwardDraw extends Command
     private Canvas c;
     private Paint p;
 
+    private Vector2D position;
+    private Vector2D delta;
+
+    public static boolean DRAWING_ENABLED = true;
+
     // endregion
 
     // region constructors
@@ -36,7 +41,7 @@ public class ForwardDraw extends Command
      * @param fractalView the panel the lines are drawn to
      * @param nextGenerationLength when the length of the line which is drawn by this command
      *                             gets smaller than this value a new generation should be created.
-     * @param name the name for this specific drawAndCutOff command (typically F or G).
+     * @param name the name for this specific cutOff command (typically F or G).
      */
     public ForwardDraw(double shrinkFactor, double length, FractalView fractalView, double nextGenerationLength, String name)
     {
@@ -86,14 +91,19 @@ public class ForwardDraw extends Command
         length *= zoomFactor;
     }
 
-    public TurtleInformation execute(Canvas c, TurtleInformation turtleInfo)
+
+    @Override
+    public TurtleInformation executeSpecific(Canvas c, TurtleInformation turtleInfo)
     {
-        Transform2D transform = turtleInfo.getTransform();
-        Vector2D delta = Vector2D.polarToCartesian(length, transform.getRotation());
-        Command.newTurtleInformation.getTransform().getPosition().add(delta);
-        FractalView.PAINT.setColor(Turtle.COLORS.get(turtleInfo.getColorNumber()));
-        drawLine(c, transform.getPosition(), Command.newTurtleInformation.getTransform().getPosition(), fractalView.getWidth(), fractalView.getHeight());
-        return Command.newTurtleInformation;
+        position = turtleInfo.getTransform().getPosition().copy();
+        delta = Vector2D.polarToCartesian(length, turtleInfo.getTransform().getRotation());
+        turtleInfo.getTransform().getPosition().add(delta);
+        if (DRAWING_ENABLED)
+        {
+            FractalView.PAINT.setColor(Turtle.COLORS.get(turtleInfo.getColorNumber()));
+            drawLine(c, position, turtleInfo.getTransform().getPosition(), fractalView.getWidth(), fractalView.getHeight());
+        }
+        return turtleInfo;
     }
 
     @Override
@@ -139,7 +149,7 @@ public class ForwardDraw extends Command
      * Inspired by the design of OpenGL, device coordinates are in the range of [-1,1] for the smaller
      * value of width and height. the interval of the other (bigger) dimension is proportionally larger than the smaller one.
      * This method converts those device coordinates to pixel coordinates and actually draws a line from the start to the end position.
-     * @param c the canvas object used to drawAndCutOff to the screen.
+     * @param c the canvas object used to cutOff to the screen.
      * @param startPosition the start position for the line in device coordinates.
      * @param endPosition the end position for the line in device coordinates.
      * @param width the total width of the panel the fractal is drawn to.

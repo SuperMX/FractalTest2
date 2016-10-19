@@ -139,18 +139,15 @@ public class Turtle
 
     /**
      * cuts off all parts of the fractal which are outside of the screen to avoid memory and rendering overload.
-     * @param c the canvas object used to draw on the panel (not used but required for this method to work. just pass null as argument.)
      * @return true if the fractal got lost and is not visible anywhere on the screen anymore, false otherwise.
      */
-    public List<Command> cutOff(Canvas c)
+    public List<Command> cutOff()
     {
         ForwardDraw.DRAWING_ENABLED = false;
         //fractal.updatePosition();
         currentTurtleInfo = startTurtleInfo.clone();
-        Vector2D pos = Vector2D.add(currentTurtleInfo.getTransform().getPosition(), fractal.getPosition());
-        currentTurtleInfo.getTransform().setPosition(pos);
-
-        Command.initializeTurtleInfoBuffers(currentTurtleInfo);
+        currentTurtleInfo.getTransform().getPosition().add(fractal.getPosition());
+        TurtleInformation currentTurtleInfoCopy = currentTurtleInfo.clone();
 
         List<Command> commands = lSystem.getCurrent();
         List<Command> newCommand = new LinkedList<>();
@@ -163,7 +160,8 @@ public class Turtle
 
         for (Command command : commands)
         {
-            newTurtleInfo = command.execute(c);
+            command.execute(null, currentTurtleInfoCopy);
+            newTurtleInfo = currentTurtleInfoCopy;
             if (isOutOfBounds(newTurtleInfo))
             {
                 if (!outOfBounds)
@@ -193,7 +191,7 @@ public class Turtle
                     }
                 }
             }
-            currentTurtleInfo = command.finish(c);
+            currentTurtleInfo.copyDataFromOtherTurtleInformation(newTurtleInfo);
             if (!cutOffStartSet)
             {
                 newCommand.add(command);
@@ -206,8 +204,8 @@ public class Turtle
             // drifts away exponentially when zooming into the fractal until it eventually grows so large that it overflows a double value.
             // YES - this happened ;).
             JumpCommand jumpCommand = (JumpCommand)newCommand.get(0);
-            Command.initializeTurtleInfoBuffers(startTurtleInfo);
-            startTurtleInfo = jumpCommand.execute(c).clone();
+            jumpCommand.execute(null, startTurtleInfo);
+
             newCommand.remove(0);
         }
         ForwardDraw.DRAWING_ENABLED = true;
@@ -218,15 +216,12 @@ public class Turtle
     {
         //fractal.updatePosition();
         currentTurtleInfo = startTurtleInfo.clone();
-        Vector2D pos = Vector2D.add(currentTurtleInfo.getTransform().getPosition(), fractal.getPosition());
-        currentTurtleInfo.getTransform().setPosition(pos);
-
-        Command.initializeTurtleInfoBuffers(currentTurtleInfo);
+        currentTurtleInfo.getTransform().getPosition().add(fractal.getPosition());
 
         List<Command> commands = lSystem.getCurrent();
         for (Command command : commands)
         {
-            command.execute(c);
+            command.execute(c, currentTurtleInfo);
         }
         return !(commands.size() > 0);
     }

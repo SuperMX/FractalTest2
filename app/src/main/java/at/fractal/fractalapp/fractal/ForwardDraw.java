@@ -22,9 +22,6 @@ public class ForwardDraw extends Command
     private double nextGenerationLength;
     private String name;
 
-    private Canvas c;
-    private Paint p;
-
     private Vector2D position;
     private Vector2D delta;
 
@@ -93,7 +90,7 @@ public class ForwardDraw extends Command
 
 
     @Override
-    public TurtleInformation executeSpecific(Canvas c, TurtleInformation turtleInfo)
+    public void execute(Canvas c, TurtleInformation turtleInfo)
     {
         position = turtleInfo.getTransform().getPosition().copy();
         delta = Vector2D.polarToCartesian(length, turtleInfo.getTransform().getRotation());
@@ -103,7 +100,6 @@ public class ForwardDraw extends Command
             FractalView.PAINT.setColor(Turtle.COLORS.get(turtleInfo.getColorNumber()));
             drawLine(c, position, turtleInfo.getTransform().getPosition(), fractalView.getWidth(), fractalView.getHeight());
         }
-        return turtleInfo;
     }
 
     @Override

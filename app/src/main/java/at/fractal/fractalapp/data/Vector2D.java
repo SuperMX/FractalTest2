@@ -69,14 +69,18 @@ public class Vector2D
 
     /**
      * Changes the length (magnitude) of this vector to 1. The angle is not influenced and stays exactly the same.
-     * @return The normalized vector.
      */
-    public Vector2D normalize()
+    public void normalize()
     {
         double factor = 1d / getMagnitude();
         this.x *= factor;
         this.y *= factor;
-        return this;
+    }
+
+    public void setValues(Vector2D v)
+    {
+        this.x = v.x;
+        this.y = v.y;
     }
 
     /**

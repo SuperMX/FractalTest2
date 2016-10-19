@@ -80,7 +80,7 @@ public class LSystem
         }
         if (nextGenerationCreated)
         {
-            current = turtle.cutOff(null);
+            current = turtle.cutOff();
             nextGeneration();
         }
         return nextGenerationCreated;
@@ -121,7 +121,6 @@ public class LSystem
             if (command.isAtMinimumLength())
                 isAtMinimumLength = true;
         }
-        System.out.println(current.size() + "\tcommands this frame!");
         return isAtMinimumLength;
     }
 

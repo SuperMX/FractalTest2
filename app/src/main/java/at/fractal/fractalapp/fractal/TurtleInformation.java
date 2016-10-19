@@ -73,6 +73,13 @@ public class TurtleInformation
 
     }
 
+    public void copyDataFromOtherTurtleInformation(TurtleInformation turtleInfo)
+    {
+        this.transform.getPosition().setValues(turtleInfo.transform.getPosition());
+        this.transform.setRotation(turtleInfo.transform.getRotation());
+        this.colorNumber = turtleInfo.colorNumber;
+    }
+
     @Override
     public int hashCode()
     {

@@ -29,10 +29,9 @@ public class TurnLeft extends Command
     // region public methods
 
     @Override
-    public TurtleInformation executeSpecific(Canvas c, TurtleInformation turtleInfo)
+    public void execute(Canvas c, TurtleInformation turtleInfo)
     {
         turtleInfo.getTransform().addRotation(angle);
-        return turtleInfo;
     }
 
     @Override

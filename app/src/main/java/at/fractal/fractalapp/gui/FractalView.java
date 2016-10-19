@@ -22,6 +22,9 @@ import at.fractal.fractalapp.fractal.Snowflake;
 import at.fractal.fractalapp.fractal.Squares;
 import at.fractal.fractalapp.fractal.Triangle;
 import at.fractal.fractalapp.fractal.Watch;
+import at.fractal.fractalapp.fractal.ZoomSpeedManager;
+import at.fractal.fractalapp.function.Function;
+import at.fractal.fractalapp.function.LinearFunction;
 
 /**
  * Created by Markus on 12.10.2016.
@@ -43,6 +46,8 @@ public class FractalView extends SurfaceView implements Runnable
     private List<Fractal> fractalsToDraw = new ArrayList<>();
     private List<Fractal> fractals = new ArrayList<>();
     private Vector2D zoomPoint = new Vector2D(0.5,0.5);
+    private ZoomSpeedManager zoomSpeedManager;
+    private Function zoomSpeedFunction;
     private int counter = 0;
     private double cutOffLimitX = 1, cutOffLimitY = 1;
 
@@ -54,25 +59,24 @@ public class FractalView extends SurfaceView implements Runnable
     // A Canvas and a Paint object
     private Canvas canvas;
     public static Paint PAINT;
-    private long fps;
+    private long fps = 30;
     private final long maxFps = 30;
     private long timeToRender;
-    private long startFrameTime;
-    private long endFrameTime;
 
     public FractalView(Context context)
     {
         super(context);
 
-        this.setOnTouchListener(new OnTouchListener() {
+        this.setOnTouchListener(new OnTouchListener()
+        {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public boolean onTouch(View v, MotionEvent event)
+            {
                 //if (event.getAction() == MotionEvent.ACTION_DOWN){}
                 if (event.getAction() == MotionEvent.ACTION_MOVE)
                 {
                     int ex = (int) event.getX();
                     int ey = (int) event.getY();
-
                     int screensize = Math.min(getWidth(),getHeight());
                     double x = ((double) ex - (double) getWidth() / 2) * 2 / (double) screensize;
                     double y = ((double) ey - (double) getHeight() / 2) * 2 / (double) screensize;
@@ -95,19 +99,23 @@ public class FractalView extends SurfaceView implements Runnable
         Fractal carpet = new Carpet(this, spawnPosition);
         Fractal watch = new Watch(this, spawnPosition);
         Fractal snowflake = new Snowflake(this, spawnPosition);
+        spawnPosition = new Vector2D(-0.4,0.4);
         Fractal pathFractal = new PathFractal(this, spawnPosition);
 
         fractals.add(pathFractal);
+        fractals.add(snowflake);
         fractals.add(watch);
         fractals.add(islands);
         fractals.add(triangle);
         fractals.add(carpet);
         fractals.add(squares);
-        fractals.add(snowflake);
+
 
         fractalsToDraw.add(fractals.get(0));
+        zoomSpeedFunction = new LinearFunction(1,0,0.00005,1.1);
+        zoomSpeedFunction.setMinMaxValue(1.1,3);
+        zoomSpeedManager = new ZoomSpeedManager(zoomSpeedFunction);
 
-        // Initialize ourHolder and paint objects
         ourHolder = getHolder();
         PAINT = new Paint();
         // Set our boolean to true - game on!
@@ -120,14 +128,14 @@ public class FractalView extends SurfaceView implements Runnable
     {
         while (playing)
         {
-            startFrameTime = System.currentTimeMillis();
-            long startUpdateTime = System.currentTimeMillis();
+            long startFrameTime = System.currentTimeMillis();
+            //long startUpdateTime = System.currentTimeMillis();
             // Update the frame
-            boolean nextGenerationCreated = update();
+            update();
             //System.out.println("updateTime: "+(System.currentTimeMillis()-startUpdateTime));
-            long startDrawTime = System.currentTimeMillis();
+            //long startDrawTime = System.currentTimeMillis();
             // Draw the frame
-            draw(nextGenerationCreated);
+            draw();
             //System.out.println("drawTime: "+(System.currentTimeMillis()-startDrawTime));
             // Calculate the fps this frame
             // We can then use the result to
@@ -149,7 +157,7 @@ public class FractalView extends SurfaceView implements Runnable
                 }
             }
             // time this frame took
-            endFrameTime = System.currentTimeMillis() - startFrameTime;
+            long endFrameTime = System.currentTimeMillis() - startFrameTime;
             endFrameTime = Math.max(endFrameTime, 1);
             fps = 1000 / endFrameTime;
         }
@@ -170,22 +178,19 @@ public class FractalView extends SurfaceView implements Runnable
         }
     }
 
-    public boolean update()
+    public void update()
     {
-        boolean nextGenerationCreated = false;
         calculateCutOffLimit();
+        zoomSpeedManager.updateZoomSpeed(fps);
+        double zoomFactor = zoomSpeedManager.calculateZoomFactor(fps);
         for (Fractal fractal : fractalsToDraw)
         {
-            if (!nextGenerationCreated)
-                nextGenerationCreated = fractal.getTurtle().zoom(zoomPoint, 1.02);
-            else
-                fractal.getTurtle().zoom(zoomPoint, 1.02);
+            fractal.getTurtle().zoom(zoomPoint, zoomFactor);
         }
-        return nextGenerationCreated;
     }
 
     // Draw the newly updated scene
-    public void draw(boolean nextGenerationCreated)
+    public void draw()
     {
         // Make sure our drawing surface is valid or we crash
         if (ourHolder.getSurface().isValid()) {
@@ -202,6 +207,7 @@ public class FractalView extends SurfaceView implements Runnable
                 {
                     System.out.println("removed fractal " + fractalsToDraw.get(i));
                     fractalsToDraw.remove(i);
+                    zoomSpeedFunction.setIncrementStart(0);
                     counter++;
                     if (counter == fractals.size())
                         counter = 0;

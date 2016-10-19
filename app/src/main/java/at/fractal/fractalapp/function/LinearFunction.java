@@ -15,9 +15,15 @@ public class LinearFunction extends Function
 
     // region constructors
 
-    public LinearFunction(double minValue, double maxValue, double k, double d)
+    public LinearFunction(double k, double d)
     {
-        super(minValue,maxValue);
+        this.d = d;
+        this.k = k;
+    }
+
+    public LinearFunction(double incrementStep, double incrementStart, double k, double d)
+    {
+        super(incrementStep, incrementStart);
         this.d = d;
         this.k = k;
     }
@@ -26,7 +32,8 @@ public class LinearFunction extends Function
 
     // region methods
 
-    protected double calc(double x)
+    @Override
+    public double calculate(double x)
     {
         return k * x + d;
     }

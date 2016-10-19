@@ -48,7 +48,7 @@ public class Fractal extends GameObject
      * creates a new fractal with the specified properties.
      *
      * commands:
-     * F to K:  turtle moves forward and draws a line.
+     * F to Z (except for L):  turtle moves forward and draws a line.
      * f: turtle moves forward without drawing a line.
      * +: turtle turns left
      * -: turtle turns right
@@ -57,7 +57,7 @@ public class Fractal extends GameObject
      * <xx: go xx colors to the left from the current (x is a digit)
      *
      * replacement rules:
-     * ([F-K]|f)=.+ (in regex)
+     * ([F-Z]|f)=.+ (in regex)
      * instead of simply using "=" as replacement you can also use:
      * =x.x (where x stands for any positive integer number): to specify the probability this replacement rule will be used for the specified command.
      * it is required that the total probabilities of all replacement rules for a specific command always equal 100% or 1!
@@ -207,7 +207,8 @@ public class Fractal extends GameObject
                     double d = Double.parseDouble(number);
                     probability = d;
                     i += number.length() - 1;
-                    function = new LinearFunction(min,max,k,d);
+                    function = new LinearFunction(k,d);
+                    function.setMinMaxValue(min, max);
                 }
                 else if (!nextChar.matches("[0-9]"))
                 {

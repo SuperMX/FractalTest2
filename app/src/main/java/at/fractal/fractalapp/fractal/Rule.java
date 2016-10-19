@@ -18,7 +18,6 @@ public class Rule
     private List<List<Command>> successors = new ArrayList<>();
     private List<Double> probabilities = new ArrayList<>();
     private List<Function> functions = new ArrayList<>();
-    private int counter = 0;
 
     // endregion
 
@@ -80,10 +79,11 @@ public class Rule
             if (functions.get(i) != null)
             {
                 probabilities.remove(i);
-                probabilities.add(i,functions.get(i).calculate(counter));
+                double y = functions.get(i).calculateIncremented();
+                y = functions.get(i).limit(y);
+                probabilities.add(i,y);
             }
         }
-        counter++;
     }
 
     // endregion

@@ -13,7 +13,7 @@ public class Snowflake extends Fractal
 
     public Snowflake(FractalView fractalPanel, Vector2D spawnPosition)
     {
-        super(fractalPanel,rules,"F--F--F",new Vector2D(-0.5,0.7),spawnPosition,1.4,60,3,0.1);
+        super(fractalPanel,rules,"F--F--F",new Vector2D(-0.5,0.7),spawnPosition,1.4,60,3,0.04);
     }
 
     @Override

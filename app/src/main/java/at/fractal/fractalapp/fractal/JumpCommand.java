@@ -41,13 +41,12 @@ public class JumpCommand extends Command
     }
 
     @Override
-    public TurtleInformation executeSpecific(Canvas c, TurtleInformation turtleInfo)
+    public void execute(Canvas c, TurtleInformation turtleInfo)
     {
         Vector2D newPosition = Vector2D.add(turtleInfo.getTransform().getPosition(), delta.getTransform().getPosition());
         turtleInfo.getTransform().setPosition(newPosition);
         turtleInfo.getTransform().setRotation(delta.getTransform().getRotation());
         turtleInfo.setColorNumber(delta.getColorNumber());
-        return turtleInfo;
     }
 
     @Override

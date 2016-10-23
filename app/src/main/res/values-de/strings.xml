@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">The Last Dimension</string>
+
+    <string name="button_start_name">Starte Spiel</string>
+    <string name="button_end_name">Beenden</string>
+</resources>
